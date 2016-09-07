@@ -1,4 +1,4 @@
-﻿
+﻿@model List<MyFirstJSApp.Models.TodoItem>
 @{
     ViewBag.Title = "Index6";
 }
@@ -8,38 +8,130 @@
 
     $(function () {
 
+        function deleteButton(btn)
+        {
+            var id = btn.data("id");
+
+            $.ajax({
+                method: "POST",
+                url: "/Home/DelTodoItem",
+                data: { task_id: id }
+            }).done(function (result) {
+
+                if (result.HasError == false) {
+                    btn.parent().fadeOut(1000, function () {
+                        btn.parent().remove();
+                    });
+                }
+                else {
+                    alert("Hata oluştu, kayıt silinemedi.");
+                }
+
+            }).fail(function () {
+                alert("Silme işlemi yapılamadı.");
+            });
+        }
+
+        function editButtonProcess(btn, span) {
+            $(span).attr("contenteditable", "true");
+            console.log($(span).data("attached-blur"));
+
+
+            if (span.data("attached-blur") == false)
+            {
+                $(span).blur(function () {
+                    var id = btn.data("id");
+                    var txt = span.html();
+
+                    console.log(txt);
+
+                    $.ajax({
+                        method: "POST",
+                        url: "/Home/EditTodoItem",
+                        data: { task_id: id, new_text: txt }
+                    }).done(function (result) {
+
+                        if (result.HasError == false) {
+                            span.removeAttr("contenteditable");
+                            span.fadeOut(0);
+                            span.fadeIn(250);
+                        }
+                        else {
+                            alert("Hata oluştu, kayıt düzenlenemedi.");
+                        }
+
+                    }).fail(function () {
+                        alert("Düzenleme işlemi yapılamadı.");
+                    });
+
+                });
+
+                span.data("attached-blur", true);
+            }
+        }
+
+        $("#tasklist li button.btn-danger").each(function () {
+            $(this).click(function () {
+                deleteButton($(this));
+            });
+        });
+
+        $("#tasklist li button.btn-warning").each(function () {
+            $(this).click(function () {
+                editButtonProcess($(this), $(this).parent().find("span"));
+            });
+        });
+
         $("#btnAdd").click(function () {
 
             var text = $("#txtTask").val();
 
-            var li = $("<li></li>").addClass("list-group-item");
-            var b1 = $("<button></button>").addClass("btn btn-danger btn-xs");
-            var b1_ico = $("<span></span>").addClass("glyphicon glyphicon-trash");
-            var b2 = $("<button></button>").addClass("btn btn-warning btn-xs");;
-            var b2_ico = $("<span></span>").addClass("glyphicon glyphicon-edit");
-            var s1 = $("<span></span>").html(text);
+            // async javascript and xml..
+            $.ajax({
+                method: "POST",
+                url: "/Home/Index6",
+                data: { task: text }
+            }).done(function (result) {
+                // { HasError:false, NewTaskId=1 }
+                console.log(result);
 
-            b1.click(function () {
-                b1.parent().fadeOut(1000, function () {
-                    b1.parent().remove();
-                })
+                if (result.HasError == false)
+                {
+
+                    var li = $("<li></li>").addClass("list-group-item");
+                    var b1 = $("<button></button>").addClass("btn btn-danger btn-xs");
+                    var b1_ico = $("<span></span>").addClass("glyphicon glyphicon-trash");
+                    var b2 = $("<button></button>").addClass("btn btn-warning btn-xs");
+                    var b2_ico = $("<span></span>").addClass("glyphicon glyphicon-edit");
+                    var s1 = $("<span data-attached-blur='false'></span>").html(text);
+                    
+                    b1.attr("data-id", result.NewTaskId);
+                    b2.attr("data-id", result.NewTaskId);
+
+                    b1.click(function () {
+                        deleteButtonProcess(b1);
+                    });
+
+                    b2.click(function () {
+                        editButtonProcess(b2, s1);
+                    });
+
+                    b1.append(b1_ico);
+                    b2.append(b2_ico);
+                    li.append(b1);
+                    li.append(b2);
+                    li.append(s1);
+
+                    $("#tasklist").append(li);
+
+                }
+                else
+                {
+                    alert("Bir hata oluştu.");
+                }
+            }).fail(function (e) {
+                alert("Ohhhh shit..");
             });
-
-            b2.click(function () {
-                s1.attr("contenteditable", "true");
-                //b2.parent().find("span").attr("contenteditable", "true");
-                s1.blur(function () {
-                    s1.removeAttr("contenteditable");
-                });
-            });
-
-            b1.append(b1_ico);
-            b2.append(b2_ico);
-            li.append(b1);
-            li.append(b2);
-            li.append(s1);
-
-            $("#tasklist").append(li);
 
         });
 
@@ -67,25 +159,18 @@
 
         <ul id="tasklist" class="list-group">
 
-            @*<li class="list-group-item">
-                <button class="btn btn-danger btn-xs">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <button class="btn btn-warning btn-xs">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </button>
-                <span>Consectetur adipiscing elit fusce vel.</span>
-            </li>
-
-            <li class="list-group-item">
-                <button class="btn btn-danger btn-xs">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <button class="btn btn-warning btn-xs">
-                    <span class="glyphicon glyphicon-edit"></span>
-                </button>
-                <span>Consectetur adipiscing elit fusce vel.</span>
-            </li>*@
+            @foreach (MyFirstJSApp.Models.TodoItem item in Model)
+            {
+                <li class="list-group-item">
+                    <button class="btn btn-danger btn-xs" data-id="@item.Id">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button class="btn btn-warning btn-xs"  data-id="@item.Id">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    <span data-attached-blur="false">@item.Text</span>
+                </li>
+            }
 
         </ul>
     </div>
