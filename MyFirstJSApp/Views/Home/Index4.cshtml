@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index4";
+}
+
+@*Silinecek*@
+<script src="~/Scripts/jquery-3.1.0.min.js"></script>
+
+<script>
+
+    $(function () {
+
+        $("#btnYap").click(function () {
+            $("#tamAdSoyad").html( $("#txtAd").val() + " " + $("#txtSoyad").val() );
+        });
+
+        // val()        : değer get et(value)
+        // val("asas")  : değer set et(value) 
+
+        // html()        : değer get et(innerHTML)
+        // html("asas")  : değer set et(innerHTML) 
+
+    });
+
+</script>
+
+
+<h2>Index4</h2>
+<hr />
+
+<input id="txtAd" type="text" class="form-control" placeholder="Adınız" /><br />
+<input id="txtSoyad" type="text" class="form-control" placeholder="Soyadınız" /><br />
+<input id="btnYap" type="button" class="btn btn-success" value="Yaz" />
+
+<hr />
+
+<div class="alert alert-info">
+    <span id="tamAdSoyad"></span>
+</div>

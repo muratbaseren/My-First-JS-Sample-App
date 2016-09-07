@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index5";
+}
+<script src="~/Scripts/jquery-3.1.0.min.js"></script>
+
+<script>
+
+    $(function () {
+
+        $("#btnKontrol").click(function () {
+
+            if($("#txtAd").val() == "")
+            {
+                $("#txtAd").addClass("err");
+            }
+            else
+            {
+                $("#txtAd").removeClass("err");
+
+                $("#sonuc").html("");
+
+                var ad = $("#txtAd").val();
+
+                var div = $("<div></div>");
+                div.addClass("alert alert-info");
+                div.html(ad);
+
+                div.click(function () {
+                    div.fadeOut(1000);
+                });
+
+                div.hide();
+
+                $("#sonuc").append(div);
+
+                div.fadeIn(2000, function () {
+                    alert(ad);
+                });
+                
+            }
+
+        });
+
+    })
+
+</script>
+
+<style>
+    .err {
+        border-color: red;
+    }
+</style>
+
+<h2>Index5</h2>
+<hr />
+
+<input type="text" id="txtAd" placeholder="Adınız" class="form-control" /><br />
+
+<button id="btnKontrol" class="btn btn-success">Kontrol Et</button>
+<br /><br />
+
+<div id="sonuc">
+    
+</div>

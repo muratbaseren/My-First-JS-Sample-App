@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index3";
+}
+
+<script>
+
+    function onLoaded() {
+
+        var btn = document.getElementById("btnYap");
+
+        btn.onclick = function () {
+            var tAd = document.getElementById("txtAd");
+            var tSoyad = document.getElementById("txtSoyad");
+            var sTamAdSoyad = document.getElementById("tamAdSoyad");
+
+            sTamAdSoyad.innerHTML = tAd.value + " " + tSoyad.value;
+        }
+
+    }
+
+</script>
+
+
+<h2>Index3</h2>
+<hr />
+
+<input id="txtAd" type="text" class="form-control" placeholder="Adınız" /><br />
+<input id="txtSoyad" type="text" class="form-control" placeholder="Soyadınız" /><br />
+<input id="btnYap" type="button" class="btn btn-success" value="Yaz" />
+
+<hr />
+
+<div class="alert alert-info">
+    <span id="tamAdSoyad"></span>
+</div>

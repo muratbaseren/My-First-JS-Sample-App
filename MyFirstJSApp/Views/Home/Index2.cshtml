@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Index2";
+}
+
+<script>
+
+    function Metod(a, b) {
+        alert(a);
+        alert(b);
+    }
+
+
+    /*==========================================================0*/
+
+    var nesne1 = new Object();
+    nesne1.Ad = "murat";
+    nesne1.Soyad = "başeren";
+
+    nesne1.AdSoyadGoster = function (a,b) {
+        //alert(a);
+        //alert(b);
+
+        alert(this.Ad + " " + this.Soyad);
+    }
+
+    /*==========================================================0*/
+
+
+    //alert(nesne1.Ad + " " + nesne1.Soyad);
+    nesne1.AdSoyadGoster(3, 4);
+
+    var nesne2 = {
+        Ad: "murat",
+        Soyad: "baseren",
+        AdSoyadGoster : function () {
+            alert(this.Ad + " " + this.Soyad);
+        }
+    };
+
+    //alert(nesne2.Ad + " " + nesne2.Soyad);
+
+
+
+
+</script>
+
+
+
+<h2>Index2</h2>
+<hr />
+
+
+

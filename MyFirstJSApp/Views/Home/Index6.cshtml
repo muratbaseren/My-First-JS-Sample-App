@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Index6";
+}
+<script src="~/Scripts/jquery-3.1.0.min.js"></script>
+
+<script>
+
+    $(function () {
+
+        $("#btnAdd").click(function () {
+
+            var text = $("#txtTask").val();
+
+            var li = $("<li></li>").addClass("list-group-item");
+            var b1 = $("<button></button>").addClass("btn btn-danger btn-xs");
+            var b1_ico = $("<span></span>").addClass("glyphicon glyphicon-trash");
+            var b2 = $("<button></button>").addClass("btn btn-warning btn-xs");;
+            var b2_ico = $("<span></span>").addClass("glyphicon glyphicon-edit");
+            var s1 = $("<span></span>").html(text);
+
+            b1.click(function () {
+                b1.parent().fadeOut(1000, function () {
+                    b1.parent().remove();
+                })
+            });
+
+            b2.click(function () {
+                s1.attr("contenteditable", "true");
+                //b2.parent().find("span").attr("contenteditable", "true");
+                s1.blur(function () {
+                    s1.removeAttr("contenteditable");
+                });
+            });
+
+            b1.append(b1_ico);
+            b2.append(b2_ico);
+            li.append(b1);
+            li.append(b2);
+            li.append(s1);
+
+            $("#tasklist").append(li);
+
+        });
+
+    });
+
+</script>
+
+
+<h2>To-Do List</h2>
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h3>Task</h3>
+        <input type="text" id="txtTask" class="form-control" placeholder="type your task" />
+        <br />
+        <button id="btnAdd" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus"></span> Add
+        </button>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Task List</h3>
+
+        <ul id="tasklist" class="list-group">
+
+            @*<li class="list-group-item">
+                <button class="btn btn-danger btn-xs">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn btn-warning btn-xs">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <span>Consectetur adipiscing elit fusce vel.</span>
+            </li>
+
+            <li class="list-group-item">
+                <button class="btn btn-danger btn-xs">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn btn-warning btn-xs">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </button>
+                <span>Consectetur adipiscing elit fusce vel.</span>
+            </li>*@
+
+        </ul>
+    </div>
+
+</div>
